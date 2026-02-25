@@ -26,6 +26,11 @@ const GetButton = styled.button`
     margin-bottom: 20px;
 `;
 
+/* So i tried to do a infinite scroll, so i did a lot of ajustment on the original code of the project.
+I may have use AI a bit too much for this option, but i tried to keep the original spirit of the project.
+Also the API is very limited and often returns 429 errors when we scroll too fast, so i had to add a loading state and a timeout to prevent spamming the API with requests.
+I also fetch the entire chapter at once instead of verse by verse, which is more efficient and reduces the number of requests. */
+
 export default function App() {
     const [verses, setVerses] = useState<BibleVerse[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,6 +45,7 @@ export default function App() {
 
         try {
             // We fetch the entire chapter at once, which is more efficient than fetching verse by verse
+            // I limited the API to the book of Genesis for simplicity, as i had other problems to solve before i coulf figure out how to switch book.
             const url = `https://bible-api.com/genesis+${chapter}`;
             const response = await fetch(url);
 
